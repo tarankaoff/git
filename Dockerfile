@@ -27,3 +27,17 @@ RUN apt-get install -y clickhouse-server clickhouse-client net-tools procps nano
 
 
 COPY info.csv /
+
+
+RUN echo "#!/bin/bash" > /script.sh
+RUN echo "" >> /script.sh
+RUN echo "/etc/init.d/clickhouse-server start" >> /script.sh
+RUN echo '/usr/bin/clickhouse-client --host=127.0.0.1 --user=default --password=test123 --query "CREATE DATABASE IF NOT EXISTS test"' >> /script.sh
+RUN echo '/usr/bin/clickhouse-client --host=127.0.0.1 --user=default --password=test123 --query="CREATE TABLE test.test2 ( year Int16, amount Int16 ) ENGINE = Log"' >> /script.sh
+RUN echo 'cat info.csv | clickhouse-client --database=test --query="INSERT INTO test.test2 FORMAT CSV" --password=test123' >> /script.sh
+
+
+RUN echo "/bin/bash" >> /script.sh
+
+RUN echo 'exec "$@"' >> /script.sh
+
