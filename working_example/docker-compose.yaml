@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  clickhouse:
+    container_name: clickhouse
+    image: yandex/clickhouse-server:21.5
+    environment:
+      CLICKHOUSE_DB: test
+      CLICKHOUSE_USER: testuser
+      CLICKHOUSE_PASSWORD: strongpassword
+    expose:
+      - 8123
+      - 9000
+    ports:
+      - 9000:9000
+      - 8123:8123
+    volumes:
+      - ./info.csv:/info.csv
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+
+  clickhouse_client:
+    container_name: clickhouse_client
+    image: yandex/clickhouse-client:21.5
+    environment:
+      CLICKHOUSE_HOST: "clickhouse"
+      CLICKHOUSE_DB: test
+      CLICKHOUSE_USER: testuser
+      CLICKHOUSE_PASSWORD: strongpassword
+    entrypoint:
+      - /get_data.sh
+    volumes:
+      - ./get_data.sh:/get_data.sh
+    depends_on: ["clickhouse"]
