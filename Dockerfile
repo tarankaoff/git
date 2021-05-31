@@ -22,3 +22,7 @@ RUN echo "</password_sha256_hex>\n\
 \t\t</default>\n\
 \t</users>\n\
 </yandex>\n" >> /etc/clickhouse-server/users.d/default-password.xml
+
+RUN apt-get install -y clickhouse-server clickhouse-client net-tools procps nano
+
+
