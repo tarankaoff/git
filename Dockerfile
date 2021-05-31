@@ -26,3 +26,4 @@ RUN echo "</password_sha256_hex>\n\
 RUN apt-get install -y clickhouse-server clickhouse-client net-tools procps nano
 
 
+COPY info.csv /
