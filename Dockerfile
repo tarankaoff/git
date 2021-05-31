@@ -10,4 +10,15 @@ RUN apt-get update
 
 
 
+RUN mkdir /etc/clickhouse-server/ /etc/clickhouse-server/users.d/
 
+RUN echo -n "<yandex>\n\
+\t<users>\n\
+\t\t<default>\n\
+\t\t\t<password remove='1' />\n\
+\t\t\t<password_sha256_hex>" > /etc/clickhouse-server/users.d/default-password.xml
+RUN echo -n "test123" | sha256sum | tr -d ' - \n -' >> /etc/clickhouse-server/users.d/default-password.xml
+RUN echo "</password_sha256_hex>\n\
+\t\t</default>\n\
+\t</users>\n\
+</yandex>\n" >> /etc/clickhouse-server/users.d/default-password.xml
