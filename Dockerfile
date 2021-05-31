@@ -41,3 +41,7 @@ RUN echo "/bin/bash" >> /script.sh
 
 RUN echo 'exec "$@"' >> /script.sh
 
+RUN chmod +x /script.sh
+ENTRYPOINT ["/script.sh"]
+CMD ["clickhouse"]
+
